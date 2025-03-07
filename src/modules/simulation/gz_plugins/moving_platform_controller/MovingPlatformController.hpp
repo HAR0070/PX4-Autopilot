@@ -77,7 +77,7 @@ private:
 	void sendVelocityCommands();
 
 	gz::transport::Node _node;
-	// gz::sim::Entity &_entity;
+	gz::sim::Entity _entity;
 	gz::sim::Model _model{gz::sim::kNullEntity};
 
 

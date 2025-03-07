@@ -48,7 +48,8 @@ void MovingPlatformController::Configure(const gz::sim::Entity &entity,
 		gz::sim::EntityComponentManager &ecm,
 		gz::sim::EventManager &eventMgr)
 {
-	// _entity = entity;
+	_entity = entity;
+	_model = gz::sim::Model(entity);
 
 	// refrain from hardcoding world name / path?
 	std::string cmd_vel_topic = "/model/flat_platform/link/platform_link/cmd_vel";
@@ -134,10 +135,14 @@ void MovingPlatformController::updateVelocityCommands(const gz::math::Vector3d &
 
 void MovingPlatformController::updatePose(const gz::sim::EntityComponentManager &ecm)
 {
-	// do this some different way....
-	// auto pose = ecm.Component<gz::sim::components::Pose>(_model.Entity());
-	// _platform_position = pose->Data().Pos();
-	// _platform_orientation = pose->Data().Rot();
+	auto pose = ecm.Component<gz::sim::components::Pose>(_entity);
+
+	if (pose != nullptr) {
+		_platform_position = pose->Data().Pos();
+		_platform_orientation = pose->Data().Rot();
+	} else {
+		std::cerr << "MovingPlatformController: got nullptr pose" << std::endl;
+	}
 }
 
 void MovingPlatformController::sendVelocityCommands()
@@ -145,6 +150,11 @@ void MovingPlatformController::sendVelocityCommands()
 	gz::msgs::Twist twist_msg;
 	gz::msgs::Set(twist_msg.mutable_linear(), _platform_v);
 	gz::msgs::Set(twist_msg.mutable_angular(), _platform_w);
-
 	_platform_twist_pub.Publish(twist_msg);
+
+	// other approaches that might circumvent needing an extra topic:
+	// _entity.SetWorldTwist(_platform_v, _platform_w);
+	// _model.SetLinearVel(_platform_v);
+	// _model.SetAngularVel(_platform_w);
+
 }
