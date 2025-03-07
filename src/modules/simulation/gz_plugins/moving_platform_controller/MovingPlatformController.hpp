@@ -34,7 +34,19 @@
 #pragma once
 
 #include <gz/sim/System.hh>
+#include "gz/sim/components/Pose.hh"
+#include <gz/sim/components/Model.hh>
+#include <gz/sim/EntityComponentManager.hh>
+#include <gz/sim/Util.hh>
+
 #include <gz/transport/Node.hh>
+#include <gz/plugin/Register.hh>
+#include <gz/msgs/Utility.hh>
+#include <gz/msgs/twist.pb.h>
+
+#include <gz/math.hh>
+#include <gz/math/Rand.hh>
+#include <gz/math/Pose3.hh>
 
 namespace custom
 {
@@ -61,22 +73,25 @@ public:
 
 private:
 
-	gz::transport::Node _node;
-
 	void updatePose(const gz::sim::EntityComponentManager &ecm);
 	void updateVelocityCommands(const gz::math::Vector3d &mean_velocity);
 	void sendVelocityCommands();
 
+	gz::transport::Node _node;
 	gz::sim::Entity &_entity;
 
-	// low-pass filtered white noise for driving boat motion
+	// Low-pass filtered white noise for driving boat motion.
 	gz::math::Vector3d _noise_v_lowpass{0., 0., 0.};
 	gz::math::Vector3d _noise_w_lowpass{0., 0., 0.};
 
+	// Platform linear & angular velocity.
 	gz::math::Vector3d _platform_v{0., 0., 0.};
 	gz::math::Vector3d _platform_w{0., 0., 0.};
 
+	// Platform position & orientation for feedback.
 	gz::math::Vector3d _platform_position{0., 0., 0.};
 	gz::math::Quaterniond _platform_orientation{1., 0., 0., 0.};
+
+	gz::transport::Node::Publisher _platform_twist_pub;
 };
 } // end namespace custom

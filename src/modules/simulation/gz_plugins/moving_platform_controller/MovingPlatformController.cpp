@@ -33,18 +33,6 @@
 
 #include "MovingPlatformController.hpp"
 
-#include <gz/plugin/Register.hh>
-
-#include "gz/sim/components/Pose.hh"
-#include <gz/sim/components/Model.hh>
-#include <gz/sim/EntityComponentManager.hh>
-#include <gz/sim/Util.hh>
-
-#include <gz/math.hh>
-#include <gz/math/Rand.hh>
-#include <gz/math/Pose3.hh>
-
-
 using namespace custom;
 
 // Register the plugin
@@ -62,6 +50,10 @@ void MovingPlatformController::Configure(const gz::sim::Entity &entity,
 		gz::sim::EventManager &eventMgr)
 {
 	_entity = entity;
+
+	// refrain from hardcoding world name / path?
+	std::string cmd_vel_topic = "/model/flat_platform/link/platform_link/cmd_vel";
+	_platform_twist_pub = _node.Advertise<gz::msgs::Twist>(cmd_vel_topic);
 }
 
 void MovingPlatformController::PreUpdate(const gz::sim::UpdateInfo &_info, gz::sim::EntityComponentManager &ecm)
@@ -149,5 +141,9 @@ void MovingPlatformController::updatePose(const gz::sim::EntityComponentManager 
 
 void MovingPlatformController::sendVelocityCommands()
 {
+	gz::msgs::Twist twist_msg;
+	gz::msgs::Set(twist_msg.mutable_linear(), _platform_v);
+	gz::msgs::Set(twist_msg.mutable_angular(), _platform_w);
 
+	_platform_twist_pub.Publish(twist_msg);
 }
