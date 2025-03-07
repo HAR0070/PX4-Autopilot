@@ -40,7 +40,6 @@ GZ_ADD_PLUGIN(
 	MovingPlatformController,
 	gz::sim::System,
 	gz::sim::ISystemPreUpdate,
-	gz::sim::ISystemPostUpdate,
 	gz::sim::ISystemConfigure
 )
 
@@ -49,7 +48,7 @@ void MovingPlatformController::Configure(const gz::sim::Entity &entity,
 		gz::sim::EntityComponentManager &ecm,
 		gz::sim::EventManager &eventMgr)
 {
-	_entity = entity;
+	// _entity = entity;
 
 	// refrain from hardcoding world name / path?
 	std::string cmd_vel_topic = "/model/flat_platform/link/platform_link/cmd_vel";
@@ -132,11 +131,13 @@ void MovingPlatformController::updateVelocityCommands(const gz::math::Vector3d &
 	}
 }
 
+
 void MovingPlatformController::updatePose(const gz::sim::EntityComponentManager &ecm)
 {
-	auto pose = ecm.Component<gz::sim::components::Pose>(_entity);
-	_platform_position = pose->Data().Pos();
-	_platform_orientation = pose->Data().Rot();
+	// do this some different way....
+	// auto pose = ecm.Component<gz::sim::components::Pose>(_model.Entity());
+	// _platform_position = pose->Data().Pos();
+	// _platform_orientation = pose->Data().Rot();
 }
 
 void MovingPlatformController::sendVelocityCommands()

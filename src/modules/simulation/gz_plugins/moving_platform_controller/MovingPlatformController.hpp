@@ -33,11 +33,12 @@
 
 #pragma once
 
+#include <gz/sim/Util.hh>
+#include <gz/sim/Model.hh>
 #include <gz/sim/System.hh>
 #include "gz/sim/components/Pose.hh"
 #include <gz/sim/components/Model.hh>
 #include <gz/sim/EntityComponentManager.hh>
-#include <gz/sim/Util.hh>
 
 #include <gz/transport/Node.hh>
 #include <gz/plugin/Register.hh>
@@ -48,28 +49,26 @@
 #include <gz/math/Rand.hh>
 #include <gz/math/Pose3.hh>
 
+#include <iostream>
+
 namespace custom
 {
 class MovingPlatformController:
 	public gz::sim::System,
 	public gz::sim::ISystemPreUpdate,
-	public gz::sim::ISystemPostUpdate,
 	public gz::sim::ISystemConfigure
 {
 public:
 	void PreUpdate(const gz::sim::UpdateInfo &_info,
 		       gz::sim::EntityComponentManager &_ecm) final;
 
-	void PostUpdate(const gz::sim::UpdateInfo &_info,
-			const gz::sim::EntityComponentManager &_ecm) final;
-
 	void Configure(const gz::sim::Entity &entity,
 		       const std::shared_ptr<const sdf::Element> &sdf,
 		       gz::sim::EntityComponentManager &ecm,
 		       gz::sim::EventManager &eventMgr) override;
 
-	MovingPlatformController();
-	~MovingPlatformController() override = default;
+	// MovingPlatformController() {};
+	// ~MovingPlatformController() override = default;
 
 private:
 
@@ -78,7 +77,9 @@ private:
 	void sendVelocityCommands();
 
 	gz::transport::Node _node;
-	gz::sim::Entity &_entity;
+	// gz::sim::Entity &_entity;
+	gz::sim::Model _model{gz::sim::kNullEntity};
+
 
 	// Low-pass filtered white noise for driving boat motion.
 	gz::math::Vector3d _noise_v_lowpass{0., 0., 0.};
