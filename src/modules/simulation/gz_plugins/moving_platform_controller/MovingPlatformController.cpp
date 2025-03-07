@@ -140,6 +140,7 @@ void MovingPlatformController::updatePose(const gz::sim::EntityComponentManager 
 	if (pose != nullptr) {
 		_platform_position = pose->Data().Pos();
 		_platform_orientation = pose->Data().Rot();
+
 	} else {
 		std::cerr << "MovingPlatformController: got nullptr pose" << std::endl;
 	}

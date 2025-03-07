@@ -155,6 +155,7 @@ int GZBridge::init()
 	if (_world_name.compare("moving_platform") == 0) {
 		std::string platform_navsat_topic = "/world/" + _world_name +
 						    "/model/flat_platform/link/platform_link/sensor/navsat_sensor/navsat";
+
 		if (!_node.Subscribe(platform_navsat_topic, &GZBridge::platformNavsatCallback, this)) {
 			PX4_ERR("failed to subscribe to %s", flow_topic.c_str());
 			return PX4_ERROR;
