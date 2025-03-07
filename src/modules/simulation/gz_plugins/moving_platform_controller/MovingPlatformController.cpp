@@ -52,7 +52,7 @@ void MovingPlatformController::Configure(const gz::sim::Entity &entity,
 	_model = gz::sim::Model(entity);
 
 	// refrain from hardcoding world name / path?
-	std::string cmd_vel_topic = "/model/flat_platform/link/platform_link/cmd_vel";
+	std::string cmd_vel_topic = "/model/flat_platform/cmd_vel";
 	_platform_twist_pub = _node.Advertise<gz::msgs::Twist>(cmd_vel_topic);
 }
 
@@ -147,14 +147,11 @@ void MovingPlatformController::updatePose(const gz::sim::EntityComponentManager 
 
 void MovingPlatformController::sendVelocityCommands()
 {
+	// We use the velocity control plugin to directly set velocities.
+	// other approaches that might circumvent needing an extra topic:
+
 	gz::msgs::Twist twist_msg;
 	gz::msgs::Set(twist_msg.mutable_linear(), _platform_v);
 	gz::msgs::Set(twist_msg.mutable_angular(), _platform_w);
 	_platform_twist_pub.Publish(twist_msg);
-
-	// other approaches that might circumvent needing an extra topic:
-	// _entity.SetWorldTwist(_platform_v, _platform_w);
-	// _model.SetLinearVel(_platform_v);
-	// _model.SetAngularVel(_platform_w);
-
 }

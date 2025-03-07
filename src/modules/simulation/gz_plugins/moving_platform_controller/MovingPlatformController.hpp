@@ -51,6 +51,34 @@
 
 #include <iostream>
 
+
+/*
+ *  To use this plugin, add the following to your model.sdf:
+ *
+ *      <?xml version="1.0" encoding="UTF-8"?>
+ *      <sdf version="1.9">
+ *        <model name="flat_platform">
+ *
+ *          <!-- the rest of your model -->
+ *
+ *          <plugin
+ *            filename="gz-sim-velocity-control-system"
+ *            name="gz::sim::systems::VelocityControl">
+ *          </plugin>
+ *
+ *          <plugin
+ *            filename="libMovingPlatformController.so"
+ *            name="custom::MovingPlatformController">
+ *          </plugin>
+ *
+ *        </model>
+ *      </sdf>
+ *
+ * At the moment the model name "flat_platform" is hardcoded, so it will only
+ * work for models with that name.
+ *
+ */
+
 namespace custom
 {
 class MovingPlatformController:
@@ -66,9 +94,6 @@ public:
 		       const std::shared_ptr<const sdf::Element> &sdf,
 		       gz::sim::EntityComponentManager &ecm,
 		       gz::sim::EventManager &eventMgr) override;
-
-	// MovingPlatformController() {};
-	// ~MovingPlatformController() override = default;
 
 private:
 
