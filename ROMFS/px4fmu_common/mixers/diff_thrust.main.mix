@@ -1,0 +1,10 @@
+# Differential thrust mixer for twin motors
+# Left motor: throttle + yaw
+# Right motor: throttle - yaw
+
+M: 2
+O:      10000  10000      0 -10000  10000  # Output scaling (PWM range)
+S: 0 3  10000      0      0 -10000  10000  # Throttle (control group 3)
+S: 0 2   5000      0      0 -10000  10000  # Yaw (control group 0, index 2)
+S: 0 3  10000      0      0 -10000  10000  # Throttle (right motor)
+S: 0 2  -5000      0      0 -10000  10000  # Yaw (right motor, inverted)
