@@ -1,0 +1,15 @@
+# 4 motors: 2 for throttle, 2 for differential yaw
+M: 4
+O:      10000  10000      0 -10000  10000
+
+# Motor 1: Throttle (control group 3, index 0)
+S: 3 0  10000  0      0 -10000  10000
+
+# Motor 2: Throttle (control group 3, index 0)
+S: 3 0  10000  0      0 -10000  10000
+
+# Motor 3: Yaw (right motor, +yaw scaling)
+S: 0 2  10000  0      0 -10000  10000
+
+# Motor 4: Yaw (left motor, -yaw scaling)
+S: 0 2  -10000  0      0 -10000  10000
