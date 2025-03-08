@@ -1,0 +1,2 @@
+set MIXER delta_thrust
+set CA_AIRFRAME 0  # Disable Control Allocation (use mixer)
